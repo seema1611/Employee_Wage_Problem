@@ -7,7 +7,7 @@ public class EmpWageBuilder {
       static final int MAXIMUM_WORKING_DAYS=20;
       static final int MAXIMUM_WORKING_HOURS=100;
 
-      public static void main(String args[]) {
+      public void calculateWage() {
          //Variables
          int empHrs=0;
          int salary=0,total_Salary=0;
@@ -31,5 +31,10 @@ public class EmpWageBuilder {
             total_Salary=total_Working_Hours * EMPLOYEE_RATE_PER_HOUR;
          }
          System.out.println("Total Employee Salary: "+total_Salary);
+     }
+
+     public static void main(String args[]) {
+        EmpWageBuilder e1=new EmpWageBuilder();
+        e1.calculateWage();
      }
 }
