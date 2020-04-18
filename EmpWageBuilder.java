@@ -83,19 +83,19 @@ class EmpWageBuilder{
 
 
    static void printDailyandTotalWage(){
-        String name="";
-        System.out.println("Enter company name");
-        name=sc.next();
-        for(int index=0;index<companiesArray.size();index++){
-            if((companiesArray.get(index).companyName.toString().toLowerCase().equals(name.toLowerCase()))){
-                System.out.println("--------"+companiesArray.get(index).companyName.toString()+"--------");
-                for(int listIndex=0;listIndex<companiesArray.get(index).dailywages.size();listIndex++){
-                    int daily=companiesArray.get(index).dailywages.get(listIndex);
-                    System.out.println("daily wages are: "+daily+" and total wages is "+companiesArray.get(index).totalwage);
-                }
+      String name="";
+      System.out.println("Enter company name");
+      name=sc.next();
+      for(int index=0;index<companiesArray.size();index++){
+         if((companiesArray.get(index).companyName.toString().toLowerCase().equals(name.toLowerCase()))){
+            System.out.println("--------"+companiesArray.get(index).companyName.toString()+"--------");
+               for(int listIndex=0;listIndex<companiesArray.get(index).dailywages.size();listIndex++) {
+                  int daily=companiesArray.get(index).dailywages.get(listIndex);
+                   System.out.println("daily wages are: "+daily+" and total wages is "+companiesArray.get(index).totalwage);
+               }
             }
-        }
-    }
+         }
+      }
 
    //Main method
    public static void main(String[] args) {
