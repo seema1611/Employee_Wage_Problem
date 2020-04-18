@@ -40,9 +40,9 @@ class EmpWageBuilder{
 
     //Method to compute wages and size
     static void computeWages(){
-        for(int i=companyWages.size(); i<companiesArray.size(); i++)
-            computeEmployeeWage(companiesArray.get(i).companyName,companiesArray.get(i).FULL_DAY_HOUR,companiesArray.get(i).MAX_HOURS,
-                                                      companiesArray.get(i).MAX_DAYS,companiesArray.get(i).EMP_RATE_PER_HOUR);
+        for(int index=companyWages.size(); index<companiesArray.size(); index++)
+            computeEmployeeWage(companiesArray.get(index).companyName,companiesArray.get(index).FULL_DAY_HOUR,companiesArray.get(index).MAX_HOURS,
+                                                      companiesArray.get(index).MAX_DAYS,companiesArray.get(index).EMP_RATE_PER_HOUR);
     }
 
    //Method to calculate total employee wage
@@ -51,6 +51,7 @@ class EmpWageBuilder{
       int monthlyHours=0;
       int hours=0;
       int days=0;
+      ArrayList<Integer> alist = new ArrayList<>();
       final int IS_FULL_TIME = 1;
       final int IS_PART_TIME = 2;
 
@@ -67,11 +68,33 @@ class EmpWageBuilder{
             default:
                   dailyHours+=0;
             }
+            alist.add(dailyHours*EMP_RATE_PER_HOUR);
             hours+=dailyHours;
             days++;
             monthlyHours+=dailyHours;
          }
-         companyWages.put(companyName,(EMP_RATE_PER_HOUR*monthlyHours));
+        for(int listIndex=0;listIndex<companiesArray.size();listIndex++) {
+            if(companiesArray.get(listIndex).companyName.toString().equals(companyName)) {
+                companiesArray.get(listIndex).set(alist,(EMP_RATE_PER_HOUR*monthlyHours));
+            }
+        }
+        companyWages.put(companyName,(EMP_RATE_PER_HOUR*monthlyHours));
+    }
+
+
+   static void printDailyandTotalWage(){
+        String name="";
+        System.out.println("Enter company name");
+        name=sc.next();
+        for(int index=0;index<companiesArray.size();index++){
+            if((companiesArray.get(index).companyName.toString().toLowerCase().equals(name.toLowerCase()))){
+                System.out.println("--------"+companiesArray.get(index).companyName.toString()+"--------");
+                for(int listIndex=0;listIndex<companiesArray.get(index).dailywages.size();listIndex++){
+                    int daily=companiesArray.get(index).dailywages.get(listIndex);
+                    System.out.println("daily wages are: "+daily+" and total wages is "+companiesArray.get(index).totalwage);
+                }
+            }
+        }
     }
 
    //Main method
@@ -82,6 +105,7 @@ class EmpWageBuilder{
          switch(choice) {
          case 1: addCompany();
                  computeWages();
+                 printDailyandTotalWage();
                  break;
          case 2:System.out.println("----Exit-----");
                  break;
@@ -99,6 +123,8 @@ class CompanyEmpWage{
    final int MAX_DAYS;
    final int MAX_HOURS;
    String companyName ;
+   ArrayList<Integer> dailywages;
+   int totalwage;
 
    CompanyEmpWage(String companyName,int wagePerHour, int fullDayHours, int total_Working_Days,int total_Working_Hours){
       this.companyName=companyName;
@@ -106,5 +132,9 @@ class CompanyEmpWage{
       this.FULL_DAY_HOUR=fullDayHours;
       this.MAX_DAYS=total_Working_Days;
       this.MAX_HOURS=total_Working_Hours;
+   }
+    public void set(ArrayList<Integer> dailyWages, int totalWage){
+        this.dailywages=dailyWages;
+        this.totalwage=totalWage;
     }
 }
