@@ -1,55 +1,102 @@
-public class EmpWageBuilder {
+import java.util.*;
+import java.lang.*;
 
-      //Constants
-      static final int IS_PART_TIME=1;
-      static final int IS_FULL_TIME=2;
+class EmployeeWage{
+   static Scanner sc = new Scanner(System.in);
+   static Map<String,Integer> companyWages = new HashMap<String,Integer>();
+   static CompanyEmpWage companiesArray[];
 
-      //Variables
-      String companyName;
-      int empHrs=0,emp_Rate_Per_Hour=0;
-      int max_Days=0,max_Hours=0;
-      int salary=0,total_Salary=0;
-      int total_Working_Days=0,total_Working_Hours=0;
+   static void addCompany(){
+      int wage;
+      int totalDays;
+      int hoursInDay;
+      int totalHours;
+      String name="";
+      int numberOfCompanies;
 
-      //Constructor
-      public EmpWageBuilder(String companyName, int emp_Rate_Per_Hour, int max_Hours, int max_Days) {
-         this.companyName=companyName;
-         this.emp_Rate_Per_Hour=emp_Rate_Per_Hour;
-         this.max_Hours=max_Hours;
-         this.max_Days=max_Days;
+      System.out.println("Enter number of companies you want to add");
+      numberOfCompanies=sc.nextInt();
+      companiesArray= new CompanyEmpWage[numberOfCompanies];
+
+      for(int i=0; i<numberOfCompanies; i++){
+         System.out.println("Enter name of Company");
+         name=sc.next();
+
+         System.out.println("Enter wage per hour");
+         wage=sc.nextInt();
+
+         System.out.println("Enter  hours per day");
+         hoursInDay=sc.nextInt();
+
+         System.out.println("Enter the total working days");
+         totalDays=sc.nextInt();
+
+         System.out.println("Enter total working hours");
+         totalHours=sc.nextInt();
+
+         companiesArray[i]=new CompanyEmpWage(name,wage,hoursInDay,totalDays,totalHours);
+         computeEmployeeWage(companiesArray[i].companyName,companiesArray[i].FULL_DAY_HOUR,companiesArray[i].MAX_HOURS,
+                                                           companiesArray[i].MAX_DAYS,companiesArray[i].EMP_RATE_PER_HOUR);
+
+        }
+    }
+
+   static void computeEmployeeWage(String companyName, int FULL_DAY_HOUR,int MAX_HOURS, int MAX_DAYS,int EMP_RATE_PER_HOUR){
+      int dailyHours=0;
+      int monthlyHours=0;
+      int hours=0;
+      int days=0;
+      final int IS_FULL_TIME = 1;
+      final int IS_PART_TIME = 2;
+
+         while( hours <= MAX_HOURS && days <= MAX_DAYS ) {
+            dailyHours=0;
+            int employeeCheck = (int) Math.round(Math.random()*10)%3;
+            switch (employeeCheck){
+            case IS_FULL_TIME:
+                  dailyHours = FULL_DAY_HOUR+dailyHours;
+                  break;
+            case IS_PART_TIME:
+                  dailyHours=FULL_DAY_HOUR/2+dailyHours;
+                  break;
+            default:
+                  dailyHours+=0;
+            }
+            hours+=dailyHours;
+            days++;
+            monthlyHours+=dailyHours;
+         }
+         companyWages.put(companyName,(EMP_RATE_PER_HOUR*monthlyHours));
+    }
+
+   public static void main(String[] args) {
+      System.out.println("1.Add company 2.Exit");
+      int choice = sc.nextInt();
+
+         switch(choice){
+         case 1: addCompany();
+                 break;
+         case 2:System.out.println("----Exit-----");
+                 break;
+         default:System.out.println("-----Invalid choice-----");
+         }
+         companyWages.forEach((company,wage)->System.out.println("Total wage for company "+company+" is: "+wage));
       }
 
-      //Function to calculate wage of multiple company
-      public void calculateWage() {
-         while( total_Working_Days <this.max_Days && total_Working_Hours <this.max_Hours ) {
-            total_Working_Days++;
+}
 
-            int empCheck=(int) (Math.random() *10)% 3;
-            switch(empCheck) {
-            case IS_FULL_TIME:
-               empHrs=8;
-               break;
-            case IS_PART_TIME:
-               empHrs=4;
-               break;
-            default:
-               break;
-            }
-            total_Working_Hours=total_Working_Hours+empHrs;
-            total_Salary=total_Working_Hours * emp_Rate_Per_Hour;
-         }
-         System.out.println("Total Employee Salary: "+total_Salary);
-     }
+class CompanyEmpWage{
+   final int EMP_RATE_PER_HOUR ;
+   final int FULL_DAY_HOUR ;
+   final int MAX_DAYS;
+   final int MAX_HOURS;
+   String companyName ;
 
-     //Main method
-     public static void main(String args[]) {
-        System.out.println("-----D-Mart Employee-----");
-        EmpWageBuilder e1=new EmpWageBuilder("D-Mart", 20, 100, 20);
-        e1.calculateWage();
-
-        System.out.println("-----K-mart Employee-----");
-        EmpWageBuilder e2=new EmpWageBuilder("K-MArt", 50, 200, 22);
-        e2.calculateWage();
-
-     }
+   CompanyEmpWage(String companyName,int wagePerHour, int fullDayHours, int total_Working_Days,int total_Working_Hours){
+      this.companyName=companyName;
+      this.EMP_RATE_PER_HOUR=wagePerHour;
+      this.FULL_DAY_HOUR=fullDayHours;
+      this.MAX_DAYS=total_Working_Days;
+      this.MAX_HOURS=total_Working_Hours;
+    }
 }
