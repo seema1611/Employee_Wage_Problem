@@ -1,11 +1,12 @@
 import java.util.*;
 import java.lang.*;
 
-class EmployeeWage{
+class EmpWageBuilder{
    static Scanner sc = new Scanner(System.in);
    static Map<String,Integer> companyWages = new HashMap<String,Integer>();
-   static CompanyEmpWage companiesArray[];
+   static ArrayList<CompanyEmpWage> companiesArray = new ArrayList<>();
 
+   //Method to add company details
    static void addCompany(){
       int wage;
       int totalDays;
@@ -16,16 +17,15 @@ class EmployeeWage{
 
       System.out.println("Enter number of companies you want to add");
       numberOfCompanies=sc.nextInt();
-      companiesArray= new CompanyEmpWage[numberOfCompanies];
 
       for(int i=0; i<numberOfCompanies; i++){
          System.out.println("Enter name of Company");
          name=sc.next();
 
-         System.out.println("Enter wage per hour");
+         System.out.println("Enter emp rate per hour");
          wage=sc.nextInt();
 
-         System.out.println("Enter  hours per day");
+         System.out.println("Enter hours per day");
          hoursInDay=sc.nextInt();
 
          System.out.println("Enter the total working days");
@@ -34,12 +34,18 @@ class EmployeeWage{
          System.out.println("Enter total working hours");
          totalHours=sc.nextInt();
 
-         companiesArray[i]=new CompanyEmpWage(name,wage,hoursInDay,totalDays,totalHours);
-         computeEmployeeWage(companiesArray[i].companyName,companiesArray[i].FULL_DAY_HOUR,companiesArray[i].MAX_HOURS,
-                                                           companiesArray[i].MAX_DAYS,companiesArray[i].EMP_RATE_PER_HOUR);
+          companiesArray.add(new CompanyEmpWage(name,wage,hoursInDay,totalDays,totalHours));
         }
     }
 
+    //Method to compute wages and size
+    static void computeWages(){
+        for(int i=companyWages.size(); i<companiesArray.size(); i++)
+            computeEmployeeWage(companiesArray.get(i).companyName,companiesArray.get(i).FULL_DAY_HOUR,companiesArray.get(i).MAX_HOURS,
+                                                      companiesArray.get(i).MAX_DAYS,companiesArray.get(i).EMP_RATE_PER_HOUR);
+    }
+
+   //Method to calculate total employee wage
    static void computeEmployeeWage(String companyName, int FULL_DAY_HOUR,int MAX_HOURS, int MAX_DAYS,int EMP_RATE_PER_HOUR){
       int dailyHours=0;
       int monthlyHours=0;
@@ -68,12 +74,14 @@ class EmployeeWage{
          companyWages.put(companyName,(EMP_RATE_PER_HOUR*monthlyHours));
     }
 
+   //Main method
    public static void main(String[] args) {
       System.out.println("1.Add company 2.Exit");
       int choice = sc.nextInt();
 
-         switch(choice){
+         switch(choice) {
          case 1: addCompany();
+                 computeWages();
                  break;
          case 2:System.out.println("----Exit-----");
                  break;
@@ -84,6 +92,7 @@ class EmployeeWage{
 
 }
 
+//Company Employee wage
 class CompanyEmpWage{
    final int EMP_RATE_PER_HOUR ;
    final int FULL_DAY_HOUR ;
