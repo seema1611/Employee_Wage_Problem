@@ -37,7 +37,6 @@ class EmployeeWage{
          companiesArray[i]=new CompanyEmpWage(name,wage,hoursInDay,totalDays,totalHours);
          computeEmployeeWage(companiesArray[i].companyName,companiesArray[i].FULL_DAY_HOUR,companiesArray[i].MAX_HOURS,
                                                            companiesArray[i].MAX_DAYS,companiesArray[i].EMP_RATE_PER_HOUR);
-
         }
     }
 
